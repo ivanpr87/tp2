@@ -1,6 +1,7 @@
 class Producto {
 
-    constructor(nombre, precio) {
+    constructor(id, nombre, precio) {
+        this.id = id;
         this.nombre = nombre;
         this.precio = precio;
         this.vendido = false;
@@ -10,7 +11,8 @@ class Producto {
 
 class Pedido {
 
-    constructor(nombre, precio) {
+    constructor(id, nombre, precio) {
+        this.id = id;
         this.nombre = nombre;
         this.precio = precio;
 
@@ -20,10 +22,14 @@ class Pedido {
 let importe = 0
 const productos = []
 const PEDIDO = []
+const tablita = []
 
-productos.push(new Producto("leche", 57));
-productos.push(new Producto("arroz", 47));
-productos.push(new Producto("oreo", 27));
+
+
+
+productos.push(new Producto(1,"leche", 57));
+productos.push(new Producto(2,"arroz", 47));
+productos.push(new Producto(3,"oreo", 27));
 
 function mostrarProductos() {
     alert("bienvedos al chino online")
@@ -60,13 +66,13 @@ function cantidad() {
         switch (productoS) {
 
             case "1":
-                PEDIDO.push(new Pedido("leche", 57))
+                PEDIDO.push(new Pedido(1,"leche", 57))
                 break;
             case "2":
-                PEDIDO.push(new Pedido("arroz", 47))
+                PEDIDO.push(new Pedido(2,"arroz", 47))
                 break;
             case "3":
-                PEDIDO.push(new Pedido("oreo", 27))
+                PEDIDO.push(new Pedido(3,"oreo", 27))
                 break;
             default:
                 alert("no pusiste una opcion valida")
@@ -106,7 +112,38 @@ function cuenta () {
 }
 
 
+let cotenedorProductos = document.getElementById("contenedor-productos")
+
+for (const cosa of productos){
+    
+    let columna =  document.createElement("div")
+    columna.className = "col-md-2 mt-3 m-4"
+    columna.id = `columna-${cosa.id}`
+    columna.innerHTML = `
+    
+        <div class="card" >
+            <div class="card-body">
+                <p class="card-text">Nombre: <b>${cosa.nombre}</b></p>
+                
+                <p class="card-text">Precio: <b>${cosa.precio}</b></p>
+                <button class="btn btn-primary" id=btnPrincipal>agregar</button>
+                
+            </div> 
+        </div>    
+    `
+    cotenedorProductos.appendChild(columna);
+}
+
+
+let boton = document.getElementById("btnPrincipal") 
+
+boton.addEventListener("click", () =>{
+    alert("se oprimio")
+}) 
+
+
 
 mostrarProductos()
 cantidad()
 cuenta()
+
