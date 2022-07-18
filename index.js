@@ -1,115 +1,73 @@
 class Producto {
 
-    constructor(id, nombre, precio) {
+    constructor(id, nombre, imagen, precio) {
         this.id = id;
         this.nombre = nombre;
+        this.imagen = imagen;
         this.precio = precio;
-        this.vendido = false;
+        
     }
 
 }
 
-class Pedido {
-
-    constructor(id, nombre, precio) {
+class Shop {
+    constructor(id){
         this.id = id;
-        this.nombre = nombre;
-        this.precio = precio;
-
+        this.productos = [];
     }
 
-}
-let importe = 0
-const productos = []
-const PEDIDO = []
-const tablita = []
-
-
-
-
-productos.push(new Producto(1,"leche", 57));
-productos.push(new Producto(2,"arroz", 47));
-productos.push(new Producto(3,"oreo", 27));
-
-function mostrarProductos() {
-    alert("bienvedos al chino online")
-
-    for (const producto of productos) {
-        let nombreP = producto.nombre
-        let precioP = producto.precio
-
-        alert("Hay stock de: " + nombreP + "\n Precio: " + precioP )
-
-    }
-
-
-}
-
-function seleccion() {
-    let opcion = prompt("elige su producto por el numero: \n 1. Leche \n 2. Arroz \n 3 oreo")
-    return opcion
-}
-
-function totalCantidad() {
-    
-    let cant = prompt("Coloque la cantidad total de productos que va a llevar")
-    
-    return cant
-}
-
-function cantidad() {
-    let cantidadP = totalCantidad()
-
-    for (i = 1; cantidadP >= i; i++) {
-        let productoS = seleccion();
-
-        switch (productoS) {
-
-            case "1":
-                PEDIDO.push(new Pedido(1,"leche", 57))
-                break;
-            case "2":
-                PEDIDO.push(new Pedido(2,"arroz", 47))
-                break;
-            case "3":
-                PEDIDO.push(new Pedido(3,"oreo", 27))
-                break;
-            default:
-                alert("no pusiste una opcion valida")
-                break;
-
+        calcularTotal(){
+        let total = 0;
+        for (let i = 0; i < this.productos.length; i++){
+            total = total + this.productos[i].precio;
         }
-
+    
+        return total;
     }
+}
 
-    importe = prompt("con cuanto va a pagar")
+
+const productos = []
+
+function clearCarrito(){
+    let divCarrito = document.querySelector("#carrito");
+    divCarrito.innerHTML= "";
 
 }
 
-function cuenta () {
-    let total = 0
-    let vuelto = 0
-    let mostrar = "" 
-    for (const P of PEDIDO){
-        total = total + P.precio
-    }
+function actCarrito(carrito){
+    let divCarrito = document.querySelector("#carrito");
+    carrito.productos.forEach(producto => {
+        divCarrito.innerHTML += ` ${(producto.nombre)}, ${(producto.imagen)}` //aca como deberia hacer para que salga tambien la imagen? 
+        
+    })
+    divCarrito.innerHTML +=`<p>Precio total: $ ${carrito.calcularTotal()}</p>`
 
-    vuelto= importe - total
-    if (vuelto > 0){
-        alert("Su vuelto es " + vuelto);
-    }
-    else if (vuelto < 0){
-        alert("paga la plata " )
-    }
-    else {
-        alert("usted pago justo")
-    }
-    for (const P of PEDIDO){
-        mostrar = mostrar + " \n" + P.nombre
-    }
-    alert("su pedido es: " + mostrar)
-    alert("vuelvas prontos")
 }
+
+function renovarStorage() {
+    localStorage.removeItem("carrito")
+    localStorage.setItem("carrito", JSON.stringify(carrito))
+
+}
+
+window.addEventListener(`DOMContentLoaded`, (e) =>{
+    let storage = JSON.parse( localStorage.getItem("carrito"));
+    let cSave = new Shop(storage.id, storage.productos);
+    storage.productos.forEach(productos => {
+        cSave.productos.push(productos)
+    })
+    console.log(cSave);
+    clearCarrito()
+    actCarrito(cSave)
+
+})
+
+productos.push(new Producto(1,"leche","leche.jpg", 57));
+productos.push(new Producto(2,"arroz","arroz.jpg", 47));
+productos.push(new Producto(3,"oreo","Oreo.jpg", 27));
+
+
 
 
 let cotenedorProductos = document.getElementById("contenedor-productos")
@@ -122,28 +80,41 @@ for (const cosa of productos){
     columna.innerHTML = `
     
         <div class="card" >
+            <img src="./img/${cosa.imagen}" class="card-img-top" alt="...">
             <div class="card-body">
                 <p class="card-text">Nombre: <b>${cosa.nombre}</b></p>
                 
-                <p class="card-text">Precio: <b>${cosa.precio}</b></p>
-                <button class="btn btn-primary" id=btnPrincipal>agregar</button>
+                <p class="card-text">Precio: <b>$ ${cosa.precio}</b></p>
+                <button class="btn btn-primary botonDeCompra" id=${cosa.id}>agregar</button>
                 
             </div> 
         </div>    
     `
     cotenedorProductos.appendChild(columna);
+
+    
+
 }
 
 
-let boton = document.getElementById("btnPrincipal") 
+let carrito = new Shop(1);
 
-boton.addEventListener("click", () =>{
-    alert("se oprimio")
-}) 
+let btnAddToCart = document.querySelectorAll(".botonDeCompra");
 
+btnAddToCart.forEach((btn) => {
+btn.addEventListener("click", (e) => {
+    
+    let productoElegido = productos.find(
+    (producto) => producto.id == e.target.id
+    );
+    
+    carrito.productos.push(productoElegido);
 
-
-mostrarProductos()
-cantidad()
-cuenta()
-
+    console.log(carrito);
+    console.log(carrito.calcularTotal());
+    clearCarrito()
+    actCarrito(carrito)
+    
+});
+});
+renovarStorage()
