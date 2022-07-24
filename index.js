@@ -116,7 +116,7 @@ let btnPagar = document.querySelectorAll(".botonDePagar");
         
     });
 */
-//no entiendo porque no funciona este boton
+//no entiendo porque no funciona este boton de pagar estoy casi seguro que es asi pero me tira error y me rompe todo
 
 btnAddToCart.forEach((btn) => {
     btn.addEventListener("click", (e) => {
