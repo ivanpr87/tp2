@@ -138,3 +138,24 @@ btnAddToCart.forEach((btn) => {
     });
 });
 
+function registrarProducto(produ){
+    fetch("https://62e703540e5d74566aee63b8.mockapi.io/producto", {
+        method: "POST",
+        body: JSON.stringify(produ),
+        headers: {
+            "Content-type":"application/json" 
+        }
+    }).then(response => response.json())
+    .then((data) => console.log(data));
+
+}
+
+
+const produARegistrar = 
+
+    {"createdAt":"2022-07-31T14:09:40.998Z",
+    "name":"Jabon",
+    "precio":548,};
+
+registrarProducto(produARegistrar)
+
