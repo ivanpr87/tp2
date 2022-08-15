@@ -44,10 +44,6 @@ function actCarrito(carrito) {
     <img src="./img/${producto.imagen}" class="card-img-top" style="width:300px;height:220px;" alt="...">`; 
     });
     divCarrito.innerHTML += `<p>Precio total: $ ${carrito.calcularTotal()}</p>`;
-    divCarrito.innerHTML += `
-        <button class="btn btn-primary botonDepagar">Pagar</button>
-    
-    `
 }
 
 function renovarStorage() {
@@ -108,15 +104,6 @@ let carrito = new Shop(1);
 
 let btnAddToCart = document.querySelectorAll(".botonDeAgregar");
 
-let btnPagar = document.querySelectorAll(".botonDePagar");
-
-/*btnPagar.addEventListener("click", () => {
-        productos.length = 0;
-        clearCarrito();
-        
-    });
-*/
-//no entiendo porque no funciona este boton de pagar estoy casi seguro que es asi pero me tira error y me rompe todo
 
 btnAddToCart.forEach((btn) => {
     btn.addEventListener("click", (e) => {
